@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Filter Manager</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1, h2 {
+            color: #444;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        /* Form Styles */
+        form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Output Styles */
+        pre {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        pre:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            pre {
+                padding: 15px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1, h2, form, .button-container, pre {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Filter Manager</h1>
+
+    <!-- Form to add a new filter -->
+    <h2>Add Filter</h2>
+    <form id="addFilterForm">
+        <label for="type">Filter Type:</label>
+        <input type="text" id="type" name="type" placeholder="e.g., url, keyword, filetype, ip" required>
+        <label for="value">Filter Value:</label>
+        <input type="text" id="value" name="value" placeholder="Value to block" required>
+        <button type="submit">Add Filter</button>
+    </form>
+
+    <!-- Button to fetch and display filters -->
+    <h2>View Filters</h2>
+    <div class="button-container">
+        <button id="getFilters">Show Filters</button>
+    </div>
+    <pre id="filterOutput"></pre>
+
+    <!-- Button to fetch and display logs -->
+    <h2>View Logs</h2>
+    <div class="button-container">
+        <button id="getLogs">Show Logs</button>
+    </div>
+    <pre id="logOutput"></pre>
+
+    <script>
+        document.getElementById('addFilterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = document.getElementById('type').value;
+            const value = document.getElementById('value').value;
+
+            const response = await fetch('/add_filter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type, value })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+
+        document.getElementById('getFilters').addEventListener('click', async () => {
+            const response = await fetch('/filters');
+            const filters = await response.json();
+            document.getElementById('filterOutput').textContent = JSON.stringify(filters, null, 2);
+        });
+
+        document.getElementById('getLogs').addEventListener('click', async () => {
+            const response = await fetch('/logs');
+            const logs = await response.json();
+            document.getElementById('logOutput').textContent = JSON.stringify(logs, null, 2);
+        });
+    </script>
+</body>
+</html>

@@ -3,8 +3,12 @@ A powerful MITM (Man-in-the-Middle) and Flask-based tool for monitoring and filt
 
 # FEATURES:
 Real-Time Traffic Inspection: Capture and analyze packets via scapy and mitmproxy.
+
 Threat Detection: Check IP addresses against AbuseIPDB and block high-risk sources.
 Custom Filtering: Block based on URLs, keywords, file types, and IP addresses.
+
 Logging System: Store and retrieve traffic logs with SQLite for easy analysis.
+
 Flask API: Manage filters and view logs via a RESTful API.
+
 Cross-Platform: Works on Linux and Windows with automatic firewall rules.

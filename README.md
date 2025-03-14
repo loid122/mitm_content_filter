@@ -1,7 +1,7 @@
 # MITM_CONTENT_FILTER
 A powerful MITM (Man-in-the-Middle) and Flask-based tool for monitoring and filtering HTTP/HTTPS traffic. It enhances user privacy by logging, inspecting, and blocking malicious or unwanted requests using custom filters and external threat intelligence (AbuseIPDB).
 
-#FEATURES:
+# FEATURES:
 Real-Time Traffic Inspection: Capture and analyze packets via scapy and mitmproxy.
 Threat Detection: Check IP addresses against AbuseIPDB and block high-risk sources.
 Custom Filtering: Block based on URLs, keywords, file types, and IP addresses.
